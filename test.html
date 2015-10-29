@@ -1,14 +1,71 @@
-<!DOCTYPE html>
-
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title></title>
-    <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.4.5"></script> 
+  <meta charset="utf-8">
+  <title>jQuery.getJSON demo</title>
+  <style>
+  img {
+    height: 100px;
+    float: left;
+  }
+  </style>
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.4.5"></script> 
 </head>
 <body>
-    <script type="text/javascript">
+
+
+<div id="images">
+</div>
+ <br><br><br>
+<script>
+(function() {
+  
+  var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+  $.getJSON( flickerAPI, {
+    tags: "mount rainier",
+    tagmode: "any",
+    format: "json"
+  })
+    .done(function( data ) {
+      $.each( data.items, function( i, item ) {
+        $( "<img>" ).attr( "src", item.media.m ).appendTo( "#images" );
+        if ( i === 3 ) {
+          return false;
+        }
+      });
+    });
+})();
+</script>
+<br><br><br>
+
+ <div class="wrapper">
+    <button id="button">Create Table!</button>
+</div>
+	<script>
+	$(document).ready(function(){
+		$("button").click(function(){
+		var ephtrackingAPI = "http://awdv-nephpp.cdc.gov/apigateway/GetData/v1/327/13/0/2001,2002,2003/0/json?apiToken=E3CBB1E9-B8B2-4AC9-84FB-CA273EFEB664";
+		//var ephtrackingJSON = $.getJSON(ephtrackingAPI, function(result));
+		
+			$.getJSON(ephtrackingAPI, function(result){
+				$.each(result, function(i, field){
+					//alert(field[0].year);
+					$.each(field, function(i, res) {
+						
+						$(".wrapper").append("<br>" + res.stateName + " : " + res.year + " : " + res.dataValue);
+					});
+				});
+			});
+		});
+	});
+	</script>
+
+<br><br><br>
+	<script type="text/javascript">
         d3.select("body").append("span").text("Hello, world!");
     </script>
+	
+
 </body>
 </html>
