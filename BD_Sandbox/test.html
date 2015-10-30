@@ -1,84 +1,92 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>jQuery.getJSON demo</title>
-  <style>
-  img {
-    height: 100px;
-    float: left;
-  }
-  </style>
-  <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-  <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.4.5"></script> 
-</head>
-<body>
 
+<html>
 
-<div id="images">
-</div>
- <br><br><br>
-    <script>
-        (function() {
-        var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
-        var attributes = {tags: "mount rainier", tagmode: "any", format: "json"};
+    <head>
+        <meta charset="utf-8">
+        <title>NEPHTN Tracking API Table Example</title>
+
+        <link rel="stylesheet" type="text/css" href="test.css">
+        <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.4.5"></script> 
+       <!-- <script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>-->
+    </head>
+
+    <body>
+        <a href="http://www.cdc.gov/"><img src="images/masthead.svg" alt="CDC Masthead" /></a>
+
+        <br>
+
+        <div id="TrackingDiv">    
+            <h1>National Environmental Public Health Tracking Network</h1>
+        </div>
+
+        <div id="imagesId" class="images">
+            <h2>JQuery Example</h2>
+        </div>
+         <br><br><br>
+            <script>
+                (function() {
+                var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+                var attributes = {tags: "mount rainier", tagmode: "any", format: "json"};
          
-        $.getJSON(flickerAPI, attributes)
-            .done(function( data ) {
-                $.each(data.items, function (i, item) {
-                    $("<img>").attr("src", item.media.m).appendTo("#images");
-                    $("div").append("<br>");
+                $.getJSON(flickerAPI, attributes)
+                    .done(function( data ) {
+                        $.each(data.items, function (i, item) {
+                            $("<img>").attr("src", item.media.m).appendTo("#imagesId");
+                            //$("div").append("<br>");
 
-                    if ( i === 3 ) {
-                        return false;
-                    }
-                });
-            });
-        })();
-    </script>
+                            if ( i === 3 ) {
+                                return false;
+                            }
+                        });
+                    });
+                })();
+            </script>
 
-<br><br><br>
+        <br><br><br>
 
- <div class="wrapper">
-    <button id="button">Create Table!</button>
-    <table id="table" style="width:100%">
-        <thead>
-            <tr>
-              <th>State</th>
-              <th>County</th>
-              <th>Year</th>
-              <th>Value</th>
-            </tr>
-      </thead>
+         <div id="jquerytable" class="wrapper">
+            <h2>JQuery Example</h2>
+            <button id="button">Create Table!</button>
+            <table id="table" style="width:100%">
+                <thead>
+                    <tr>
+                      <th>State</th>
+                      <th>County</th>
+                      <th>Year</th>
+                      <th>Value</th>
+                    </tr>
+              </thead>
 
-    </table>
-</div>
-	<script>
-	    $(document).ready(function(){
-		    $("button").click(function(){
-		        var ephtrackingAPI = "http://ephtracking.cdc.gov/apigateway/GetData/v1/327/13/0/2001,2002,2003/0/json?apiToken=E3CBB1E9-B8B2-4AC9-84FB-CA273EFEB664";
+            </table>
+        </div>
+	        <script>
+	            $(document).ready(function(){
+		            $("button").click(function(){
+		                var ephtrackingAPI = "http://ephtracking.cdc.gov/apigateway/GetData/v1/327/13/1/2001,2002,2003/0/json?apiToken=E3CBB1E9-B8B2-4AC9-84FB-CA273EFEB664";
 		
-		        //$(".wrapper").append("<table>");
-			    $.getJSON(ephtrackingAPI, function(result){
-				    $.each(result, function(i, field){
-					    //alert(field[0].year);
-				        $.each(field, function (i, res) {
-				            $("<tr><td>" + res.stateName + "</td><td>" + res.countyName + "</td><td>" + res.year + "</td><td>" + res.dataValue + "</td></tr>").appendTo("#table");
-					        //$(".wrapper").append("<tr><td>" + res.stateName + "</td><td>" + res.year + "</td><td>" + res.dataValue + "</td></tr>");
-					    });
-				    });
-			    });
-			    //$(".wrapper").append("</table>");
-		    });
-	    });
-	</script>
+		                //$(".wrapper").append("<table>");
+			            $.getJSON(ephtrackingAPI, function(result){
+				            $.each(result, function(i, field){
+					            //alert(field[0].year);
+				                $.each(field, function (i, res) {
+				                    $("<tr><td><center>" + res.stateName + "</center></td><td><center>" + res.countyName + "</center></td><td><center>" + res.year + "</center></td><td><center>" + res.dataValue + "</center></td></tr>").appendTo("#table");
+					                //$(".wrapper").append("<tr><td>" + res.stateName + "</td><td>" + res.year + "</td><td>" + res.dataValue + "</td></tr>");
+					            });
+				            });
+			            });
+			            //$(".wrapper").append("</table>");
+		            });
+	            });
+	        </script>
 
-<br><br><br>
-	<script type="text/javascript">
-	    d3.select("body").append("span").text("Hello, world!");
-        //d3.select("body").
-    </script>
+        <br><br><br>
+            <h2> D3 Example</h2>
+	        <script type="text/javascript">
+	            d3.select("body").append("span").text("Hello, world!");
+                //d3.select("body").
+            </script>
 	
 
-</body>
+    </body>
 </html>
