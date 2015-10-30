@@ -6,13 +6,15 @@
         <title>NEPHTN Tracking API Table Example</title>
 
         <link rel="stylesheet" type="text/css" href="test.css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-        <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.4.5"></script> 
+        <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <!--<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.4.5"></script> -->
        <!-- <script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>-->
     </head>
 
     <body>
-        <a href="http://www.cdc.gov/"><img src="images/masthead.svg" alt="CDC Masthead" /></a>
+       <!-- <a href="http://www.cdc.gov/"> <img src="images/masthead.png" alt="CDC Masthead" /></a>-->
 
         <br>
 
@@ -20,10 +22,37 @@
             <h1>National Environmental Public Health Tracking Network</h1>
         </div>
 
+        <div id="SelectDiv">
+            <label for="measure">Select a Measure</label>
+            <select name="measure" id="measure">
+                <option value="29" selected="selected">Number of preterm (less than 37 weeks gestation) live singleton births</option>
+                <option value="35">Number of low birthweight (less than 2500 grams) live term singleton births </option>
+                <option value="83">Number of days with maximum 8-hour average ozone concentration over the National Ambient Air Quality Standard</option>
+                <option value="84">Number of person-days with maximum 8-hour average ozone concentration over the National Ambient Air Quality Standard</option>
+                <option value="86">Person-days with PM2.5 over the National Ambient Air Quality Standard</option>
+            </select>
+            <br />
+            <label for="year">Select a Year</label>
+            <select name="year" id="year">
+                <option value="2005">2005</option>
+                <option value="2006">2006</option>
+                <option value="2007">2007</option>
+                <option value="2008">2008</option>
+                <option value="2009">2009</option>
+                <option value="2010">2010</option>
+                <option value="2011">2011</option>
+                <option value="2012" selected="selected">2012</option>
+            </select>
+        </div>
+
         <div id="imagesId" class="images">
             <h2>JQuery Example</h2>
         </div>
-         <br><br><br>
+        
+        <br>
+        <br>
+        <br>
+
             <script>
                 (function() {
                 var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
@@ -62,9 +91,19 @@
         </div>
 	        <script>
 	            $(document).ready(function(){
-		            $("button").click(function(){
-		                var ephtrackingAPI = "http://ephtracking.cdc.gov/apigateway/GetData/v1/327/13/1/2001,2002,2003/0/json?apiToken=E3CBB1E9-B8B2-4AC9-84FB-CA273EFEB664";
-		
+	                $("button").click(function () {
+	                    var e = document.getElementById("measure");
+	                    var measureId = e.options[e.selectedIndex].value;
+	                    //alert(measureId);
+
+
+	                    var e2 = document.getElementById("year");
+	                    var selectedYear = e2.options[e2.selectedIndex].value;
+	                    alert(selectedYear);
+
+
+		                var ephtrackingAPI = "http://ephtracking.cdc.gov/apigateway/GetData/v1/" + measureId + "/13/1/" + selectedYear + "/0/json?apiToken=E3CBB1E9-B8B2-4AC9-84FB-CA273EFEB664";
+		                alert(ephtrackingAPI);
 		                //$(".wrapper").append("<table>");
 			            $.getJSON(ephtrackingAPI, function(result){
 				            $.each(result, function(i, field){
@@ -81,11 +120,11 @@
 	        </script>
 
         <br><br><br>
-            <h2> D3 Example</h2>
+           <!-- <h2> D3 Example</h2>
 	        <script type="text/javascript">
 	            d3.select("body").append("span").text("Hello, world!");
                 //d3.select("body").
-            </script>
+            </script>-->
 	
 
     </body>
