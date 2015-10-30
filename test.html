@@ -9,7 +9,7 @@
     float: left;
   }
   </style>
-  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
   <script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.4.5"></script> 
 </head>
 <body>
@@ -18,52 +18,65 @@
 <div id="images">
 </div>
  <br><br><br>
-<script>
-(function() {
-  
-  var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
-  $.getJSON( flickerAPI, {
-    tags: "mount rainier",
-    tagmode: "any",
-    format: "json"
-  })
-    .done(function( data ) {
-      $.each( data.items, function( i, item ) {
-        $( "<img>" ).attr( "src", item.media.m ).appendTo( "#images" );
-        if ( i === 3 ) {
-          return false;
-        }
-      });
-    });
-})();
-</script>
+    <script>
+        (function() {
+        var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+        var attributes = {tags: "mount rainier", tagmode: "any", format: "json"};
+         
+        $.getJSON(flickerAPI, attributes)
+            .done(function( data ) {
+                $.each(data.items, function (i, item) {
+                    $("<img>").attr("src", item.media.m).appendTo("#images");
+                    $("div").append("<br>");
+
+                    if ( i === 3 ) {
+                        return false;
+                    }
+                });
+            });
+        })();
+    </script>
+
 <br><br><br>
 
  <div class="wrapper">
     <button id="button">Create Table!</button>
+    <table id="table" style="width:100%">
+        <thead>
+            <tr>
+              <th>State</th>
+              <th>County</th>
+              <th>Year</th>
+              <th>Value</th>
+            </tr>
+      </thead>
+
+    </table>
 </div>
 	<script>
-	$(document).ready(function(){
-		$("button").click(function(){
-		var ephtrackingAPI = "http://ephtracking.cdc.gov/apigateway/GetData/v1/327/13/0/2001,2002,2003/0/json?apiToken=E3CBB1E9-B8B2-4AC9-84FB-CA273EFEB664";
-		//var ephtrackingJSON = $.getJSON(ephtrackingAPI, function(result));
+	    $(document).ready(function(){
+		    $("button").click(function(){
+		        var ephtrackingAPI = "http://ephtracking.cdc.gov/apigateway/GetData/v1/327/13/0/2001,2002,2003/0/json?apiToken=E3CBB1E9-B8B2-4AC9-84FB-CA273EFEB664";
 		
-			$.getJSON(ephtrackingAPI, function(result){
-				$.each(result, function(i, field){
-					//alert(field[0].year);
-					$.each(field, function(i, res) {
-						
-						$(".wrapper").append("<br>" + res.stateName + " : " + res.year + " : " + res.dataValue);
-					});
-				});
-			});
-		});
-	});
+		        //$(".wrapper").append("<table>");
+			    $.getJSON(ephtrackingAPI, function(result){
+				    $.each(result, function(i, field){
+					    //alert(field[0].year);
+				        $.each(field, function (i, res) {
+				            $("<tr><td>" + res.stateName + "</td><td>" + res.countyName + "</td><td>" + res.year + "</td><td>" + res.dataValue + "</td></tr>").appendTo("#table");
+					        //$(".wrapper").append("<tr><td>" + res.stateName + "</td><td>" + res.year + "</td><td>" + res.dataValue + "</td></tr>");
+					    });
+				    });
+			    });
+			    //$(".wrapper").append("</table>");
+		    });
+	    });
 	</script>
 
 <br><br><br>
 	<script type="text/javascript">
-        d3.select("body").append("span").text("Hello, world!");
+	    d3.select("body").append("span").text("Hello, world!");
+        //d3.select("body").
     </script>
 	
 
