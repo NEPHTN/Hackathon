@@ -7,8 +7,10 @@
 
         <link rel="stylesheet" type="text/css" href="test.css">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="./js/dynatable/jquery.dynatable.css" />
         <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
         <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script src="./js/dynatable/jquery.dynatable.js"
         <!--<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.4.5"></script> -->
        <!-- <script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>-->
     </head>
@@ -99,11 +101,24 @@
 
 	                    var e2 = document.getElementById("year");
 	                    var selectedYear = e2.options[e2.selectedIndex].value;
-	                    alert(selectedYear);
+	                    //alert(selectedYear);
 
 
 		                var ephtrackingAPI = "http://ephtracking.cdc.gov/apigateway/GetData/v1/" + measureId + "/13/1/" + selectedYear + "/0/json?apiToken=E3CBB1E9-B8B2-4AC9-84FB-CA273EFEB664";
-		                alert(ephtrackingAPI);
+	                    //alert(ephtrackingAPI);
+
+
+                        
+		                $.getJSON(ephtrackingAPI, function (result) {
+		                    var $records = $(result.results),
+                            myRecords = JSON.parse($records.text());
+		                    $('#table').dynatable({
+		                        dataset: {
+		                            records: myRecords
+		                        }
+		                    });
+
+		                });
 		                //$(".wrapper").append("<table>");
 			            $.getJSON(ephtrackingAPI, function(result){
 				            $.each(result, function(i, field){
